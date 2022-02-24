@@ -3,14 +3,16 @@
 
 import * as React from 'react'
 
+// const countReducer = (state, action) => {
+//   return {...state, ...(typeof action === 'function' ? action(state) : action)}
+// }
+
 const countReducer = (state, action ) => {
   switch (action.type) {
     case 'INCREMENT': {
-      return {count: state.count + action.step}
+      break
     }
-    default: {
-      throw new Error(`Unsupported action type: ${action.type}`)
-    }
+    default: 
   }
 
 }

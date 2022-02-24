@@ -40,39 +40,36 @@ function PokemonInfo({pokemonName}) {
   // function useAsync(asyncCallback, dependencies) {/* code in here */}
 
   // -------------------------- start --------------------------
-  
-
   function useAsync(asyncCallback, dependencies) {
     const [state, dispatch] = React.useReducer(pokemonInfoReducer, {
       status: pokemonName ? 'pending' : 'idle',
+      // 🐨 this will need to be "data" instead of "pokemon"
       data: null,
       error: null,
     })
-    
+  
     React.useEffect(() => {
       const promise = asyncCallback()
-
+      
       if (!promise) {
         return
       }
-
       if (!pokemonName) {
         return
       }
       dispatch({type: 'pending'})
       fetchPokemon(pokemonName).then(
-        data => {
-          dispatch({type: 'resolved', data})
+        pokemon => {
+          dispatch({type: 'resolved', pokemon})
         },
         error => {
           dispatch({type: 'rejected', error})
         },
       )
-
       // 🐨 you'll accept dependencies as an array and pass that here.
       // 🐨 because of limitations with ESLint, you'll need to ignore
       // the react-hooks/exhaustive-deps rule. We'll fix this in an extra credit.
-    }, dependencies)
+    }, [pokemonName])
     // --------------------------- end ---------------------------
   
   }
@@ -86,13 +83,7 @@ function PokemonInfo({pokemonName}) {
   //   return fetchPokemon(pokemonName)
   // }, [pokemonName])
   // 🐨 this will change from "pokemon" to "data"
-  const state = useAsync(() => {
-    if (!pokemonName ) {
-      return
-    }
-    return fetchPokemon(pokemonName)
-  }, [pokemonName])
-  const {data, status, error} = state
+  const {pokemon, status, error} = state
 
   switch (status) {
     case 'idle':
@@ -102,7 +93,7 @@ function PokemonInfo({pokemonName}) {
     case 'rejected':
       throw error
     case 'resolved':
-      return <PokemonDataView pokemon={data} />
+      return <PokemonDataView pokemon={pokemon} />
     default:
       throw new Error('This should be impossible')
   }

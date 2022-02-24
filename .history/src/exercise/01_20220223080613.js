@@ -3,6 +3,10 @@
 
 import * as React from 'react'
 
+// const countReducer = (state, action) => {
+//   return {...state, ...(typeof action === 'function' ? action(state) : action)}
+// }
+
 const countReducer = (state, action ) => {
   switch (action.type) {
     case 'INCREMENT': {
